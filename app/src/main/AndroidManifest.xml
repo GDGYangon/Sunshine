@@ -20,7 +20,11 @@
         </activity>
         <activity
             android:name="com.androidbootcamp.sunshine.DetailActivity"
-            android:label="@string/title_activity_detail" >
+            android:label="@string/title_activity_detail"
+            android:parentActivityName="com.androidbootcamp.sunshine.MyActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.androidbootcamp.sunshine.MyActivity" />
         </activity>
     </application>
 
