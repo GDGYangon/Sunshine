@@ -26,10 +26,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Ye Lin Aung on 14/09/17.
@@ -53,6 +50,9 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my, container, false);
 
+        new FetchWeatherTask().execute();
+
+        /*
         String[] forecastArray = {
 
                 "Today - Sunny - 88/60",
@@ -72,6 +72,7 @@ public class ForecastFragment extends Fragment {
                 // Forecast Data
                 weekForecast
         );
+         */
 
 
         // Get a reference to a ListView and attach the adapter to the ListView
