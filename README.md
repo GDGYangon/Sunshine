@@ -19,7 +19,15 @@ Check out [first_lesson](https://github.com/GDGYangon/Sunshine/releases/tag/firs
 
 Second session
 ---------------
-WIP
+
+* Making HTTP Request
+* AsyncTask
+* Menu
+* Permissions
+* JSON Parsing
+* Updating UI
+
+Check out [second_session](https://github.com/GDGYangon/Sunshine/releases/tag/second_session)
 
 Third session
 ---------------
