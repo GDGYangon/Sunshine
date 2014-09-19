@@ -8,4 +8,11 @@
     <string name="refresh">Refresh</string>
     <string name="title_activity_detail">DetailActivity</string>
 
+    <string name="change_location">Change Location</string>
+
+    <!-- Key name for storing location in SharedPreferences -->
+    <string name="pref_location_key" translatable="false">location</string>
+
+    <!-- Default city name for location preference -->
+    <string name="pref_location_default" translatable="false">Yangon</string>
 </resources>

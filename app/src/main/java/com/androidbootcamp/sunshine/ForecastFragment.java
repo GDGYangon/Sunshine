@@ -1,5 +1,7 @@
 package com.androidbootcamp.sunshine;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -104,6 +107,9 @@ public class ForecastFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 new FetchWeatherTask().execute();
+                return true;
+            case R.id.action_change_location:
+                openLocationChangeDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -275,4 +281,14 @@ public class ForecastFragment extends Fragment {
         }
     }
 
+
+    private void openLocationChangeDialog() {
+        View dialogView = View.inflate(getActivity(), R.layout.weather_change, null);
+        EditText editText = (EditText) dialogView.findViewById(R.id.weather_change_edittext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.change_location)
+                .setView(dialogView);
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
 }
