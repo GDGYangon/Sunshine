@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -107,7 +108,7 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                new FetchWeatherTask().execute();
+                new FetchWeatherTask().execute(MySharedPreference.getInstance(getActivity()).getLocation());
                 return true;
             case R.id.action_change_location:
                 openLocationChangeDialog();
@@ -116,12 +117,17 @@ public class ForecastFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public class FetchWeatherTask extends AsyncTask<Void, Void, String[]> {
+    public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         @Override
-        protected String[] doInBackground(Void... params) {
+        protected String[] doInBackground(String... params) {
+
+            if (params.length == 0) {
+                return null;
+            }
+
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -134,7 +140,29 @@ public class ForecastFragment extends Fragment {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
-                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=Yangon&mode=json&units=metric&cnt=7");
+//                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=Yangon&mode=json&units=metric&cnt=7");
+
+                // Base URL
+                final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q";
+                final String QUERY_PARAM = "q";
+                final String FORMAT_PARAM = "mode";
+                final String UNITS_PARAM = "units";
+                final String DAYS_PARAM = "cnt";
+
+                String format = "json";
+                String units = "metric";
+                int numDays = 7;
+
+                Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                        .appendQueryParameter(QUERY_PARAM, params[0])
+                        .appendQueryParameter(FORMAT_PARAM, format)
+                        .appendQueryParameter(UNITS_PARAM, units)
+                        .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                        .build();
+
+                URL url = new URL(builtUri.toString());
+
+                Log.i(LOG_TAG, "url -> " + url.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -281,7 +309,6 @@ public class ForecastFragment extends Fragment {
             }
         }
     }
-
 
     private void openLocationChangeDialog() {
         View dialogView = View.inflate(getActivity(), R.layout.weather_change, null);
