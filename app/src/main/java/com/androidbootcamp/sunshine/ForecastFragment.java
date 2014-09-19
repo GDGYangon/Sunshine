@@ -285,14 +285,16 @@ public class ForecastFragment extends Fragment {
 
     private void openLocationChangeDialog() {
         View dialogView = View.inflate(getActivity(), R.layout.weather_change, null);
-        EditText editText = (EditText) dialogView.findViewById(R.id.weather_change_edittext);
+        final EditText editText = (EditText) dialogView.findViewById(R.id.weather_change_edittext);
+        editText.setText(MySharedPreference.getInstance(getActivity()).getLocation());
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.change_location)
                 .setView(dialogView)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        String location = editText.getText().toString().trim();
+                        MySharedPreference.getInstance(getActivity()).setLocation(location);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
