@@ -32,9 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Ye Lin Aung on 14/09/17.
@@ -47,6 +45,12 @@ public class ForecastFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Add this method for this fragment to handle the menu
@@ -56,30 +60,14 @@ public class ForecastFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_my, container, false);
-
-//        new FetchWeatherTask().execute();
-
-        String[] forecastArray = {
-
-                "Today - Sunny - 88/60",
-                "Tomorrow - Foggy - 70/40",
-                "Friday - Cloudy - 72/63",
-                "Saturday - Heavy Rain - 65/56"
-        };
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
 
         mForecastAdapter = new ArrayAdapter<String>(
-                // The current context (this fragment's parent activity
-                getActivity(),
-                // ID of list item layout
-                R.layout.list_item_forecast,
-                // ID of the TextView to populate
-                R.id.list_item_forecast_textview,
-                // Forecast Data
-                weekForecast
-        );
+                getActivity(), // The current context (this fragment's parent activity
+                R.layout.list_item_forecast,  // ID of list item layout
+                R.id.list_item_forecast_textview, // ID of the TextView to populate
+                new ArrayList<String>());
 
+        View rootView = inflater.inflate(R.layout.fragment_my, container, false);
 
         // Get a reference to a ListView and attach the adapter to the ListView
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
@@ -108,7 +96,7 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                new FetchWeatherTask().execute(MySharedPreference.getInstance(getActivity()).getLocation());
+                updateWeather();
                 return true;
             case R.id.action_change_location:
                 openLocationChangeDialog();
@@ -143,7 +131,7 @@ public class ForecastFragment extends Fragment {
 //                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=Yangon&mode=json&units=metric&cnt=7");
 
                 // Base URL
-                final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q";
+                final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
                 final String QUERY_PARAM = "q";
                 final String FORMAT_PARAM = "mode";
                 final String UNITS_PARAM = "units";
@@ -299,12 +287,11 @@ public class ForecastFragment extends Fragment {
         @Override
         protected void onPostExecute(String[] results) {
             super.onPostExecute(results);
+
             if (results != null) {
-                if (!mForecastAdapter.isEmpty()) {
-                    mForecastAdapter.clear();
-                    for (String dayForecastStr : results) {
-                        mForecastAdapter.add(dayForecastStr);
-                    }
+                mForecastAdapter.clear();
+                for (String dayForecastStr : results) {
+                    mForecastAdapter.add(dayForecastStr);
                 }
             }
         }
@@ -332,5 +319,12 @@ public class ForecastFragment extends Fragment {
                 });
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void updateWeather() {
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        String location = MySharedPreference.getInstance(getActivity()).getLocation();
+        Log.i("update", location);
+        weatherTask.execute(location);
     }
 }
