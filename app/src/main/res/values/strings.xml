@@ -15,4 +15,6 @@
 
     <!-- Default city name for location preference -->
     <string name="pref_location_default" translatable="false">Yangon</string>
+
+    <string name="action_share">Share</string>
 </resources>
