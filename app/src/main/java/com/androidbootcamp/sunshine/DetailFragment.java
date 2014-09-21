@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 /**
@@ -45,13 +45,13 @@ public class DetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //inflate the menu. This adds the menu item to the ActionBar
         inflater.inflate(R.menu.detail_fragment, menu);
-
+/*
         //Retrieve the share menu item
+*/
         MenuItem item = menu.findItem(R.id.menu_item_share);
-
         //fetch and store the ActionProvider
-        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-
+        android.support.v7.widget.ShareActionProvider mShareActionProvider =
+                (android.support.v7.widget.ShareActionProvider) MenuItemCompat.getActionProvider(item);
         //Attach the intent to the ActionProvider. You can update this at any time.
         //like when users select a new piece of data they'd like to share
         if (mShareActionProvider != null) {
@@ -60,7 +60,6 @@ public class DetailFragment extends Fragment {
         } else {
             Log.d(LOG_TAG, "Share Action Provider is null");
         }
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 
