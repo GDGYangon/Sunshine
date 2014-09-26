@@ -31,7 +31,12 @@ Check out [second_session](https://github.com/GDGYangon/Sunshine/releases/tag/se
 
 Third session
 ---------------
-WIP
+* Passing data
+* SharedPreference
+* UriBuilder
+* Sharing data
+
+Check out [third_session](https://github.com/GDGYangon/Sunshine/releases/tag/third_session)
 
 Fourth session
 ---------------
