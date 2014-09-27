@@ -248,6 +248,11 @@ public class ForecastFragment extends Fragment {
             final String OWM_DATETIME = "dt";
             final String OWM_DESCRIPTION = "main";
 
+            /**
+             * New line
+             */
+            final String OWM_ICON = "icon";
+
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
 
@@ -257,6 +262,8 @@ public class ForecastFragment extends Fragment {
                 String day;
                 String description;
                 String highAndLow;
+
+                String icon;
 
                 // Get the JSON object representing the day
                 JSONObject dayForecast = weatherArray.getJSONObject(i);
@@ -276,6 +283,9 @@ public class ForecastFragment extends Fragment {
                 JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
+
+                icon = weatherObject.getString(OWM_ICON);
+                Log.i("icon", icon);
 
                 highAndLow = formatHighLows(high, low);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
