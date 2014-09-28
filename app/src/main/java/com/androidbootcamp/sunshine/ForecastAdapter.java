@@ -31,20 +31,32 @@ public class ForecastAdapter extends ArrayAdapter<Item> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final ViewHolder holder;
 
-        LayoutInflater inflater =
-                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.list_item_forecast, null, false);
+        if (convertView == null || convertView.getTag() == null) {
+            LayoutInflater inflater =
+                    (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_item_forecast, null);
+            holder = new ViewHolder();
+            holder.textView = (TextView) convertView.findViewById(R.id.list_item_forecast_textview);
+            holder.imageView = (ImageView) convertView.findViewById(R.id.list_item_forecast_image);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
         String imageUrl = "http://openweathermap.org/img/w/"
                 + mItems.get(position).getImage()
                 + ".png";
-        TextView textView = (TextView) convertView.findViewById(R.id.list_item_forecast_textview);
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.list_item_forecast_image);
 
-        textView.setText(mItems.get(position).getText());
-        Picasso.with(context).load(imageUrl).into(imageView);
+        holder.textView.setText(mItems.get(position).getText());
+        Picasso.with(context).load(imageUrl).into(holder.imageView);
         return convertView;
 
+    }
+
+    static class ViewHolder {
+        TextView textView;
+        ImageView imageView;
     }
 }
