@@ -128,6 +128,7 @@ public class ForecastFragment extends Fragment {
 
             // Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
+            int numDays = 16;
 
             try {
                 // Construct the URL for the OpenWeatherMap query
@@ -144,7 +145,6 @@ public class ForecastFragment extends Fragment {
 
                 String format = "json";
                 String units = "metric";
-                int numDays = 7;
 
                 Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                         .appendQueryParameter(QUERY_PARAM, params[0])
@@ -204,7 +204,7 @@ public class ForecastFragment extends Fragment {
             }
 
             try {
-                return getWeatherDataFromJson(forecastJsonStr, 7);
+                return getWeatherDataFromJson(forecastJsonStr, numDays);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
