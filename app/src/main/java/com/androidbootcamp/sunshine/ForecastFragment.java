@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -39,7 +38,7 @@ import java.util.Date;
  */
 public class ForecastFragment extends Fragment {
 
-    private ArrayAdapter<String> mForecastAdapter;
+    private ForecastAdapter mForecastAdapter;
 
     public ForecastFragment() {
     }
@@ -61,11 +60,16 @@ public class ForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mForecastAdapter = new ArrayAdapter<String>(
-                getActivity(), // The current context (this fragment's parent activity
-                R.layout.list_item_forecast,  // ID of list item layout
-                R.id.list_item_forecast_textview, // ID of the TextView to populate
-                new ArrayList<String>());
+//        mForecastAdapter = new ArrayAdapter<String>(
+//                getActivity(), // The current context (this fragment's parent activity
+//                R.layout.list_item_forecast,  // ID of list item layout
+//                R.id.list_item_forecast_textview, // ID of the TextView to populate
+//                new ArrayList<String>());
+
+        mForecastAdapter = new ForecastAdapter(
+                getActivity(),
+                new ArrayList<Item>()
+        );
 
         View rootView = inflater.inflate(R.layout.fragment_my, container, false);
 
@@ -76,7 +80,7 @@ public class ForecastFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String foreCast = mForecastAdapter.getItem(position);
+                String foreCast = mForecastAdapter.getItem(position).getText();
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra(Intent.EXTRA_TEXT, foreCast);
                 startActivity(intent);
@@ -105,12 +109,12 @@ public class ForecastFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
+    public class FetchWeatherTask extends AsyncTask<String, Void, ArrayList<Item>> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         @Override
-        protected String[] doInBackground(String... params) {
+        protected ArrayList<Item> doInBackground(String... params) {
 
             if (params.length == 0) {
                 return null;
@@ -236,7 +240,7 @@ public class ForecastFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
-        private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+        private ArrayList<Item> getWeatherDataFromJson(String forecastJsonStr, int numDays)
                 throws JSONException {
 
             // These are the names of the JSON objects that need to be extracted.
@@ -252,6 +256,7 @@ public class ForecastFragment extends Fragment {
              * New line
              */
             final String OWM_ICON = "icon";
+            ArrayList<Item> mItems = new ArrayList<Item>();
 
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
@@ -289,20 +294,30 @@ public class ForecastFragment extends Fragment {
 
                 highAndLow = formatHighLows(high, low);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
+
+                Item mItem = new Item();
+                mItem.setText(resultStrs[i]);
+                mItem.setImage(icon);
+                mItems.add(mItem);
             }
 
-            return resultStrs;
+            return mItems;
         }
 
         @Override
-        protected void onPostExecute(String[] results) {
+        protected void onPostExecute(ArrayList<Item> results) {
             super.onPostExecute(results);
+
+//            if (results != null) {
+//                mForecastAdapter.clear();
+//                for (String dayForecastStr : results) {
+//                    mForecastAdapter.add(dayForecastStr);
+//                }
+//            }
 
             if (results != null) {
                 mForecastAdapter.clear();
-                for (String dayForecastStr : results) {
-                    mForecastAdapter.add(dayForecastStr);
-                }
+                mForecastAdapter = new ForecastAdapter(getActivity(), results);
             }
         }
     }

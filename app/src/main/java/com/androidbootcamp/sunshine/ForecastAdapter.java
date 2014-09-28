@@ -19,8 +19,8 @@ public class ForecastAdapter extends ArrayAdapter<Item> {
 
     Context context;
 
-    public ForecastAdapter(Context context, int resource, List<Item> objects) {
-        super(context, resource, objects);
+    public ForecastAdapter(Context context, List<Item> objects) {
+        super(context, R.layout.list_item_forecast, objects);
 
         this.context = context;
     }
