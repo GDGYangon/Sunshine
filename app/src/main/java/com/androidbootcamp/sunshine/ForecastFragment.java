@@ -33,13 +33,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by Ye Lin Aung on 14/09/17.
  */
 public class ForecastFragment extends Fragment {
 
     private ForecastAdapter mForecastAdapter;
-    private ListView listView;
+    @InjectView(R.id.listview_forecast)
+    ListView listView;
 
     public ForecastFragment() {
     }
@@ -74,8 +78,10 @@ public class ForecastFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_my, container, false);
 
+        ButterKnife.inject(this, rootView);
+
         // Get a reference to a ListView and attach the adapter to the ListView
-        listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        // listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
