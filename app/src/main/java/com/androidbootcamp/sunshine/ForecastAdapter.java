@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,11 +36,14 @@ public class ForecastAdapter extends ArrayAdapter<Item> {
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.list_item_forecast, null, false);
 
+        String imageUrl = "http://openweathermap.org/img/w/"
+                + mItems.get(position).getImage()
+                + ".png";
         TextView textView = (TextView) convertView.findViewById(R.id.list_item_forecast_textview);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.list_item_forecast_image);
 
         textView.setText(mItems.get(position).getText());
-//        Picasso.with(context).load(item.getImage()).into(imageView);
+        Picasso.with(context).load(imageUrl).into(imageView);
         return convertView;
 
     }
