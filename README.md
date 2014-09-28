@@ -40,4 +40,8 @@ Check out [third_session](https://github.com/GDGYangon/Sunshine/releases/tag/thi
 
 Fourth session
 ---------------
-WIP
+* Customizing ListView
+* Using external library
+* Customizing ArrayAdapter
+* Using ViewHolder pattern
+* Signing APK
