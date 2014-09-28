@@ -39,6 +39,7 @@ import java.util.Date;
 public class ForecastFragment extends Fragment {
 
     private ForecastAdapter mForecastAdapter;
+    private ListView listView;
 
     public ForecastFragment() {
     }
@@ -74,7 +75,7 @@ public class ForecastFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_my, container, false);
 
         // Get a reference to a ListView and attach the adapter to the ListView
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -318,6 +319,7 @@ public class ForecastFragment extends Fragment {
             if (results != null) {
                 mForecastAdapter.clear();
                 mForecastAdapter = new ForecastAdapter(getActivity(), results);
+                listView.setAdapter(mForecastAdapter);
             }
         }
     }

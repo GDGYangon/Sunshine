@@ -8,8 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,10 +18,13 @@ public class ForecastAdapter extends ArrayAdapter<Item> {
 
     Context context;
 
+    ArrayList<Item> mItems;
+
     public ForecastAdapter(Context context, List<Item> objects) {
         super(context, R.layout.list_item_forecast, objects);
 
         this.context = context;
+        this.mItems = (ArrayList<Item>) objects;
     }
 
     @Override
@@ -35,9 +37,8 @@ public class ForecastAdapter extends ArrayAdapter<Item> {
         TextView textView = (TextView) convertView.findViewById(R.id.list_item_forecast_textview);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.list_item_forecast_image);
 
-        Item item = (Item) getItem(position);
-        textView.setText(item.getText());
-        Picasso.with(context).load(item.getImage()).into(imageView);
+        textView.setText(mItems.get(position).getText());
+//        Picasso.with(context).load(item.getImage()).into(imageView);
         return convertView;
 
     }
